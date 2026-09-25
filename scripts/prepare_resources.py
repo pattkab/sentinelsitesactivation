@@ -1,5 +1,5 @@
 """Copy the supplied field materials and generate the website resource index."""
-import json, shutil
+import json, shutil, re, zipfile
 from pathlib import Path
 
 SOURCE = Path(r'C:\Users\xpatt\OneDrive\Desktop\INTEGRATION\SENTINEL SITES')
@@ -8,13 +8,29 @@ LIB = OUT / 'resources'
 LIB.mkdir(exist_ok=True)
 items=[]
 # Only privacy-reviewed resources may be published. Never import participant workbooks.
-PUBLIC_RESOURCES = ['cqi-examples', 'district-staging', 'facility-staging', 'kpi-feedback', 'kpi-reference', 'mentorship-guide', 'quality-of-care', 'regional-staging', 'sop-diagrams', 'sop-diagrams-editable', 'staging-feedback', 'weekly-programme']
+PUBLIC_RESOURCES = ['facility-report', 'mission-report', 'cqi-examples', 'district-staging', 'facility-staging', 'kpi-feedback', 'kpi-reference', 'mentorship-guide', 'quality-of-care', 'regional-staging', 'sop-diagrams', 'sop-diagrams-editable', 'staging-feedback', 'weekly-programme']
 def add(src, slug, title, category, note=''):
     if slug not in PUBLIC_RESOURCES:
         return
     src=SOURCE/src
     dest=LIB/(slug+src.suffix.lower())
-    shutil.copy2(src,dest)
+    if slug in {'facility-report', 'mission-report'}:
+        # Publish clean template copies; never change the user's source documents.
+        with zipfile.ZipFile(src) as original, zipfile.ZipFile(dest, 'w') as public:
+            for member in original.infolist():
+                content = original.read(member.filename)
+                if member.filename == 'docProps/core.xml':
+                    xml = content.decode('utf-8')
+                    xml = re.sub(r'(<(?:dc:creator|cp:lastModifiedBy)[^>]*>).*?(</(?:dc:creator|cp:lastModifiedBy)>)', r'\1\2', xml)
+                    content = xml.encode('utf-8')
+                elif member.filename == 'word/document.xml':
+                    xml = content.decode('utf-8')
+                    # Clear prefilled names inside underscored signature placeholders.
+                    xml = re.sub(r'(<w:t(?: [^>]*)?>)_+[^<>_]*[A-Za-z][^<>_]*_+(</w:t>)', r'\1________________________________\2', xml)
+                    content = xml.encode('utf-8')
+                public.writestr(member, content)
+    else:
+        shutil.copy2(src,dest)
     items.append(dict(id=slug,title=title,category=category,note=note,url='resources/'+dest.name,format=src.suffix[1:].upper(),size=round(dest.stat().st_size/1024)))
 
 for slug,name in [('facility','Facility'),('district','District'),('regional','Regional')]:
@@ -35,6 +51,9 @@ for file,slug,title in [
 ('6. Examples of CQI Projects using SOPs.pptx','cqi-examples','Examples of CQI projects using SOPs')]:
     add(base/'Presentations'/file,slug,title,'Presentations')
 
+
+add(base/'Reporting tools'/'Revised Sentinel_Site_Facility_Activation_Summary_and_Agreed_Actions.docx','facility-report','Facility activation summary and agreed actions','Reporting','Blank template: complete one report per facility with findings, agreed actions and follow-up.')
+add(base/'Reporting tools'/'Revised Sentinel_Site_Mission_Synthesis_Report_by Team Leads_.docx','mission-report','Mission synthesis report for team leads','Reporting','Blank template: summarise cross-site findings, priorities and follow-up for the mission.')
 
 # Remove obsolete downloads so unlinked files cannot remain publicly accessible.
 allowed = {Path(item['url']).name for item in items}
