@@ -1,0 +1,5 @@
+tmp/
+source-review.txt
+node_modules/
+*.log
+scripts/inspect_sources.py
