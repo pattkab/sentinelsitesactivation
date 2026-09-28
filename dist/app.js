@@ -7,11 +7,22 @@ const LINKS = {
  sops:'https://uganda-integrated-care-sops.pattkab.chatgpt.site/',
  drive:'https://drive.google.com/drive/folders/1EwPBAMrvi6Ep32qMVQJxEsASAhSRi8fE'
 };
+const DECKS=[
+ {title:'Overview of Integrated Service Delivery',url:'https://docs.google.com/presentation/d/1yj0vwdNsa7xo8wEis95GRp73mZsbzRcm/edit?usp=sharing&ouid=117775352150827193595&rtpof=true&sd=true'},
+ {title:'Sentinel Learning and Adaptation Sites',url:'https://docs.google.com/presentation/d/1HrApIMlXEG3TenMsFs-7QcxfTmBuFiMZ/edit?slide=id.p1#slide=id.p1'},
+ {title:'Quality of Care',url:'https://docs.google.com/presentation/d/1P9lA-i3ewPDiSQqHFCd_votbfzYbMoy5/edit?usp=sharing&ouid=117775352150827193595&rtpof=true&sd=true'},
+ {title:'Support Supervision Tool for Sentinel Sites on Integration',url:'https://docs.google.com/presentation/d/1rMPk6Q5qmyEUMfAGjLzi8KsHQxKugm1A/edit?slide=id.p1#slide=id.p1'},
+ {title:'Presentation on SOPs',url:'https://docs.google.com/presentation/d/10DdZ3FbV9a4TP44mHSTwSZ4oG376I6a8/edit?slide=id.p1#slide=id.p1'}
+];
+const CLOUD_DOCS=[
+ {title:'Revised Sentinel Site Activation Summary and Agreed Actions',url:'https://docs.google.com/document/d/1X-iJzTHCjSe1-yOkuYwp4I4xmx0hL4oC/edit?usp=sharing&ouid=117775352150827193595&rtpof=true&sd=true'},
+ {title:'Mission Synthesis Report',url:'https://docs.google.com/document/d/1LIdL-HtNVCq5AFrdhFWJ2Jc5w3xQCu_K/edit'}
+];
 const paths={
  arrow:'M7 17 17 7M7 7h10v10',right:'M4 12h16m-6-6 6 6-6 6',
  stage:'M4 20h16M6 16V9m6 7V4m6 12v-5',chart:'M4 4v16h16M7 14l4-4 4 2 5-7',
  action:'M9 5H5v15h14V5h-4M9 3h6v4H9zM8 12h8m-8 4h5',book:'M12 5c-3-2-6-2-9-1v15c3-1 6-1 9 1 3-2 6-2 9-1V4c-3-1-6-1-9 1zm0 0v15',
- file:'M14 3H5v18h14V8l-5-5zm0 0v5h5M8 13h8m-8 4h6',folder:'M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z',
+ file:'M14 3H5v18h14V8l-5-5zm0 0v5h5M8 13h8m-8 4h6',folder:'M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z',present:'M3 4h18v12H3zM12 16v3M7 21l5-2 5 2',
  check:'m5 12 4 4L19 6',calendar:'M5 5h14v16H5zM8 3v4m8-4v4M5 10h14',search:'M20 20l-5-5m2-5a7 7 0 1 1-14 0 7 7 0 0 1 14 0',print:'M7 9V3h10v6M7 17H4V9h16v8h-3M7 14h10v7H7z'};
 const icon=(name)=>`<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="${paths[name]||paths.file}"/></svg>`;
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -36,6 +47,11 @@ function overview(){
  ${tool('drive','folder','Shared Google Drive','Coordination documents, field resources and team files for the whole mission.','Open Google Drive')}
   </div><div class="mini-links">
  <a class="mini-link" href="#resources" data-resource-filter="Reporting">${icon('file')}<span>Reporting templates<small>Facility &amp; mission reports (downloads)</small></span><span class="arrow">→</span></a>
+ ${CLOUD_DOCS.map(cloudDoc).join('')}
+ </div></section>
+ <section aria-labelledby="presentations-heading"><div class="section-heading"><div><h2 id="presentations-heading">Presentations</h2><p>Core decks for the activation visit. Open in Google Slides.</p></div><span class="label-pill">SLIDE DECKS</span></div>
+ <div class="deck-grid">
+ ${DECKS.map(deck).join('')}
  </div></section>
  <section class="hero"><div><span class="eyebrow">FROM ASSESSMENT TO ACTION</span><h2>One visit. A stronger foundation<br>for integrated care.</h2><p>Orient the team, establish the baseline, start a CQI project and agree the next steps.</p></div><a href="#guide" class="button gold">Follow the activation guide ${icon('right')}</a></section>
  <div class="two-columns"><section class="panel"><div class="section-heading" style="margin:0"><h2>Your activation sequence</h2></div><div class="timeline">
@@ -49,6 +65,8 @@ function overview(){
  <div class="notice">Download the materials you need before travelling. Online forms need an internet connection; downloaded PDFs are reference copies and do not submit assessments.</div>`;
 }
 function tool(key,img,title,description,action){return `<a class="tool-card" href="${esc(LINKS[key])}" target="_blank" rel="noopener noreferrer"><span class="icon">${icon(img)}</span><h3>${title}</h3><p>${description}</p><span class="card-bottom">${action}${icon('arrow')}</span></a>`;}
+function deck({title,url}){return `<a class="deck-card" href="${esc(url)}" target="_blank" rel="noopener noreferrer"><span class="icon">${icon('present')}</span><h3>${esc(title)}</h3><span class="deck-open">Slides${icon('arrow')}</span></a>`;}
+function cloudDoc({title,url}){return `<a class="mini-link" href="${esc(url)}" target="_blank" rel="noopener noreferrer">${icon('file')}<span>${esc(title)}<small>Google Docs cloud version</small></span><span class="arrow">↗</span></a>`;}
 function timeline(n,day,title,description){return `<div class="timeline-item"><span class="step-number">${n}</span><div><span class="day">${day}</span><h3>${title}</h3><p>${description}</p></div></div>`;}
 const stages=[
  {title:'Prepare and align with the region',time:'Regional entry · usually Monday',body:'Bring regional leadership and the mentorship team together before district and facility work.',bullets:['Orient Regional Referral Hospital (RRH) leadership on sentinel sites as learning hubs for integrated service delivery.','Agree roles, team allocation, local arrangements and the week’s programme. Involve implementing partners and the relevant district teams.','Administer the regional maturity staging assessment. Choose the regional tool in the dropdown and click SUBMIT when complete.'],links:()=>ext('staging','Open staging tool')+download('weekly-programme','Weekly programme')},
