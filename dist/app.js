@@ -44,9 +44,9 @@ function overview(){
  ${tool('kpi','chart','Key Performance Indicators','Work with the facility M&E focal person to collect the baseline performance data.','Open KPI form')}
  ${tool('action','action','Shared Experiences and Action Plan','Turn identified gaps into agreed actions. Record good practices and lessons.','Open action & learning form')}
  ${tool('sops','book','SOPs','Standard Operating Procedures for integrated care delivery, guidance and feedback.','Open SOPs portal')}
+ ${toolPage('Reporting','file','Reporting Templates','Facility activation summary, agreed actions and mission synthesis report templates.','Open reporting templates')}
  ${tool('drive','folder','Shared Google Drive','Coordination documents, field resources and team files for the whole mission.','Open Google Drive')}
   </div><div class="mini-links">
- <a class="mini-link" href="#resources" data-resource-filter="Reporting">${icon('file')}<span>Reporting templates<small>Facility &amp; mission reports (downloads)</small></span><span class="arrow">→</span></a>
  ${CLOUD_DOCS.map(cloudDoc).join('')}
  </div></section>
  <section aria-labelledby="presentations-heading"><div class="section-heading"><div><h2 id="presentations-heading">Presentations</h2><p>Core decks for the activation visit. Open in Google Slides.</p></div><span class="label-pill">SLIDE DECKS</span></div>
@@ -65,6 +65,7 @@ function overview(){
  <div class="notice">Download the materials you need before travelling. Online forms need an internet connection; downloaded PDFs are reference copies and do not submit assessments.</div>`;
 }
 function tool(key,img,title,description,action){return `<a class="tool-card" href="${esc(LINKS[key])}" target="_blank" rel="noopener noreferrer"><span class="icon">${icon(img)}</span><h3>${title}</h3><p>${description}</p><span class="card-bottom">${action}${icon('arrow')}</span></a>`;}
+function toolPage(filter,img,title,description,action){return `<a class="tool-card" href="#resources" data-resource-filter="${esc(filter)}"><span class="icon">${icon(img)}</span><h3>${title}</h3><p>${description}</p><span class="card-bottom">${action}${icon('arrow')}</span></a>`;}
 function deck({title,url}){return `<a class="deck-card" href="${esc(url)}" target="_blank" rel="noopener noreferrer"><span class="icon">${icon('present')}</span><h3>${esc(title)}</h3><span class="deck-open">Slides${icon('arrow')}</span></a>`;}
 function cloudDoc({title,url}){return `<a class="mini-link" href="${esc(url)}" target="_blank" rel="noopener noreferrer">${icon('file')}<span>${esc(title)}<small>Google Docs cloud version</small></span><span class="arrow">↗</span></a>`;}
 function timeline(n,day,title,description){return `<div class="timeline-item"><span class="step-number">${n}</span><div><span class="day">${day}</span><h3>${title}</h3><p>${description}</p></div></div>`;}

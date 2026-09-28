@@ -18,7 +18,7 @@ Open `http://localhost:8080`. There is no build step or runtime dependency. Depl
 
 ## Content
 
-- Landing page with prominent access to important links: Staging Tool, Key Performance Indicators, Shared Experiences and Action Plan, SOPs, and the Shared Google Drive.
+- Landing page with prominent access to important links: Staging Tool, Key Performance Indicators, Shared Experiences and Action Plan, SOPs, Reporting Templates and the Shared Google Drive.
 - Presentations section on the landing page linking five Google Slides decks: Overview of Integrated Service Delivery, Sentinel Learning and Adaptation Sites, Quality of Care, Support Supervision Tool for Sentinel Sites on Integration, and Presentation on SOPs.
 - Cloud report links beside the reporting templates: Revised Sentinel Site Activation Summary and Agreed Actions, and Mission Synthesis Report.
 - Six-step activation guide, assessment domains and daily attendance reminder.
