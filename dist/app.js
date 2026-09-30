@@ -1,13 +1,12 @@
 'use strict';
 const DATA = window.SENTINEL_DATA;
 const LINKS = {
- staging:'https://uhacentral.com/-/single/ZCbWrbEDtLOt88FlmnrlS32rsTVJmOV?st=pDVZNJ2NMh9ZtMKq5OLNo1nIo9MAdA',
+ staging:'https://uhacentral.com/-/single/ZCbWrbEDtLOt88FlmnrlS32rsTVJmOV?st=pDVZNJ2NMh9ZtMKq5OLNo1nIo9MAdA$q9iNC!gitjRApLTUo2iA!thx72hhWLqpc',
  kpi:'https://uhacentral.com/-/single/IQMUPFMAfQC6WbO2bqXOWdMRHfQylHK?st=y9OQN!9qhUJx0PjNL11NKMGpqhcAK10a4lelQQiSvoHNhR5dluAjXqoKTdmnaQBX',
  action:'https://uhacentral.com/-/single/HA4jxCDTSfIBeC26PmoCSr1bUeN0Mjm?st=eWmrmIUr7NapOuEOCszbtpX4hm79PtJP1Z4H0hOBdeKPIoNSu92DQjRgpJB$JOjw',
  sops:'https://uganda-integrated-care-sops.pattkab.chatgpt.site/',
  drive:'https://drive.google.com/drive/folders/1EwPBAMrvi6Ep32qMVQJxEsASAhSRi8fE'
 };
-const STAGING_CODE='$q9iNC!gitjRApLTUo2iA!thx72hhWLqpc';
 const DECKS=[
  {title:'Abridged Overview Activation presentation, 11 Sept 2026',url:'https://docs.google.com/presentation/d/1yCJzDETw3oOaRzjage5dHjoDxtrDBLc7/edit?usp=drive_link&ouid=117775352150827193595&rtpof=true&sd=true'},
  {title:'Overview Integrated Delivery of Health Services-Sentinel',url:'https://docs.google.com/presentation/d/1yj0vwdNsa7xo8wEis95GRp73mZsbzRcm/edit?usp=drive_link&ouid=117775352150827193595&rtpof=true&sd=true'},
@@ -38,25 +37,17 @@ let storageAvailable=true;
 try{const saved=JSON.parse(sessionStorage.getItem('sentinel-checklist')||'null');if(Array.isArray(saved)&&saved.length===8)checks=saved.map(Boolean);}catch{storageAvailable=false;}
 
 function overview(){
- return heading('SENTINEL SITE ACTIVATION','Ready for the field.','Open the tools, presentations and reporting templates, then follow the stepwise process to activate the sentinel site.')+`
- <section aria-labelledby="essential-heading"><div class="section-heading"><div><h2 id="essential-heading">Important links</h2><p>Three groups for the visit, plus the shared drive for coordination files. Then continue with the activation sequence below.</p></div></div>
+ return `<section class="important-links" aria-labelledby="quick-links-heading"><h1 id="quick-links-heading">Important links</h1><nav class="quick-links" aria-label="Important field links">${[['staging','stage','Staging Tool'],['kpi','chart','Key Performance Indicators'],['action','action','Shared Experiences and Action Plan'],['sops','book','SOPs'],['drive','folder','Shared Google Drive']].map(([key,img,label])=>`<a href="${esc(LINKS[key])}" target="_blank" rel="noopener noreferrer">${icon(img)}<span>${label}</span>${icon('arrow')}</a>`).join('')}</nav><p>Choose the relevant level in the staging tool. Complete required fields and click SUBMIT in each assessment form.</p></section>`+heading('SENTINEL SITE ACTIVATION','Ready for the field.','Open the presentations and reporting templates, then follow the stepwise process to activate the sentinel site.')+`
+ <section aria-label="Presentations and reporting templates">
  <div class="link-categories">
- <section class="category-block" aria-labelledby="tools-heading"><div class="category-head"><span class="category-index">01</span><div><h3 id="tools-heading">Tools</h3><p>Open the form, complete every required field, then click SUBMIT.</p></div></div>
- <div class="tool-grid">
- ${tool('staging','stage','Staging Tool','Regional, district and facility assessments. Select the relevant level from the dropdown. Enter the access code when the form asks for it.','Open staging tool',STAGING_CODE)}
- ${tool('kpi','chart','Key Performance Indicators','Work with the facility M&E focal person to collect the baseline performance data.','Open KPI form')}
- ${tool('action','action','Shared Experiences and Action Plan','Turn identified gaps into agreed actions. Record good practices and lessons.','Open action & learning form')}
- ${tool('sops','book','SOPs','Standard Operating Procedures for integrated care delivery, guidance and feedback.','Open SOPs portal')}
- </div></section>
- <section class="category-block" aria-labelledby="presentations-heading"><div class="category-head"><span class="category-index">02</span><div><h3 id="presentations-heading">Presentations</h3><p>Decks for the activation visit, named as in the shared documents. Open in Google Slides.</p></div></div>
+ <section class="category-block" aria-labelledby="presentations-heading"><div class="category-head"><span class="category-index">01</span><div><h3 id="presentations-heading">Presentations</h3><p>Decks for the activation visit, named as in the shared documents. Open in Google Slides.</p></div></div>
  <div class="deck-grid">${DECKS.map(deck).join('')}</div></section>
- <section class="category-block" aria-labelledby="reports-heading"><div class="category-head"><span class="category-index">03</span><div><h3 id="reports-heading">Reporting templates</h3><p>One facility summary per sentinel site. Team leads also complete the mission synthesis. Download a copy before you travel, or open the shared document.</p></div></div>
+ <section class="category-block" aria-labelledby="reports-heading"><div class="category-head"><span class="category-index">02</span><div><h3 id="reports-heading">Reporting templates</h3><p>One facility summary per sentinel site. Team leads also complete the mission synthesis. Download a copy before you travel, or open the shared document.</p></div></div>
  <div class="report-list">
  ${reportRow(CLOUD_DOCS[0].title,'Findings, agreed actions and follow-up for this sentinel site.','facility-report',CLOUD_DOCS[0].url)}
  ${reportRow(CLOUD_DOCS[1].title,'Cross-site findings, priorities and follow-up. Completed by team leads.','mission-report',CLOUD_DOCS[1].url)}
  </div></section>
  </div>
- <a class="drive-link" href="${esc(LINKS.drive)}" target="_blank" rel="noopener noreferrer"><span class="icon">${icon('folder')}</span><span><strong>Shared Google Drive</strong><small>Coordination documents, field resources and team files for the mission.</small></span><span class="drive-open">Open drive${icon('arrow')}</span></a>
  </section>
  <section id="sequence" aria-labelledby="sequence-heading"><div class="section-heading"><div><h2 id="sequence-heading">Your activation sequence: the stepwise process flow</h2><p>Work through these steps with the region, the district and the facility. Open the tool named in each step.</p></div><button class="button secondary" id="toggle-steps" type="button" aria-expanded="false">Expand all</button></div>
  ${stepsMarkup()}
